@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Upload File To Server</string>
+    <string name="hello">Hello World, PhotoIntentActivity!</string>
+
+    <string name="btnIntend">Take (big) Picture</string>
+    <string name="btnIntendS">Take (small) Picture</string>
+    <string name="btnIntendV">Take Video</string>
+    <string name="cannot">Cannot</string>
+    <string name="album_name">CameraSample</string>
+</resources>
