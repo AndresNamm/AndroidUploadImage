@@ -49,7 +49,11 @@ import static android.os.Environment.getExternalStoragePublicDirectory;
 public class MainActivity extends AppCompatActivity {
 
 
-    private String SERVER_URL = "http://192.168.8.2/handle_upload.php";
+    //Post URLS
+    //private String SERVER_URL = "http://192.168.8.2/handle_upload.php";
+    private String SERVER_URL = "http://192.168.8.2:8000/uusapp/fileupload/";
+
+    //private String SERVER_URL = "http://requestb.in/16aqpcu1";
 
 
     // Request codes
@@ -287,18 +291,20 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... paths) {
             try {
                 int resp = uploadFile(paths[0]);
-                return "Server response" + resp;
+                return "Server response " + resp;
             } catch (Exception e) {
                 return "Unable to upload image";
             }
         }
         @Override
         protected void onPostExecute(String result) {
+            tUploadStatus.setText( result);
 
 
         }
 
         public int uploadFile(final String selectedFilePath) {
+
 
             int serverResponseCode = 0;
 
@@ -306,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
             DataOutputStream dataOutputStream;
             String lineEnd = "\r\n";
             String twoHyphens = "--";
-            String boundary = "*****";
+            String boundary = "921b1508a0b342f5bb06dfa40ae1f55d";
 
 
             int bytesRead, bytesAvailable, bufferSize;
@@ -333,17 +339,18 @@ public class MainActivity extends AppCompatActivity {
                     connection.setRequestMethod("POST");
                     connection.setRequestProperty("Connection", "Keep-Alive");
                     connection.setRequestProperty("ENCTYPE", "multipart/form-data");
-                    connection.setRequestProperty(
-                            "Content-Type", "multipart/form-data;boundary=" + boundary);
+                    connection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
                     connection.setRequestProperty("uploaded_file", selectedFilePath);
-
+                    
                     //creating new dataoutputstream
                     dataOutputStream = new DataOutputStream(connection.getOutputStream());
-
+                    String dispName= "image";
+                    //String dispName= "uploaded_file";
                     //writing bytes to data outputstream
                     dataOutputStream.writeBytes(twoHyphens + boundary + lineEnd);
-                    dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""
-                            + selectedFilePath + "\"" + lineEnd);
+                    dataOutputStream.writeBytes("Content-Disposition: form-data; name=\""+ dispName +"\";filename=\""
+                            + fileName + "\"" + lineEnd);
+                    dataOutputStream.writeBytes("Content-Type: image/jpeg" + lineEnd);
 
                     dataOutputStream.writeBytes(lineEnd);
 
@@ -387,7 +394,7 @@ public class MainActivity extends AppCompatActivity {
 
                     //response code of 200 indicates the server status OK
                     if (serverResponseCode == 200) {
-                        Log.e(U_TAG,"File Upload completed.\n\n You can see the uploaded file here: \n\n" + "http://coderefer.com/extras/uploads/" + fileName);
+                        Log.e(U_TAG,"File Upload completed.\n\n " + fileName);
                     }
 
                     //closing the input and output streams
@@ -411,13 +418,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
-
-
-
-
-
-
-
     }
 
 
