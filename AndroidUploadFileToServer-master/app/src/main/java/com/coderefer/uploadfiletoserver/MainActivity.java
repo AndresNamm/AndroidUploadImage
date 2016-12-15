@@ -51,13 +51,14 @@ public class MainActivity extends AppCompatActivity {
 
     //Post URLS
     //private String SERVER_URL = "http://192.168.8.2/handle_upload.php";
-    private String SERVER_URL = "http://192.168.8.2:8000/uusapp/fileupload/";
-
+    //private String SERVER_URL = "http://192.168.8.2:8000/uusapp/fileupload/";
+    private String SERVER_URL = "http://192.168.8.2:8000/uusapp/addimage/";
     //private String SERVER_URL = "http://requestb.in/16aqpcu1";
 
 
     // Request codes
 
+    private String token="Token b85bd5705373081b09bcc59a20d97052cbc566fa";
     private static final int ACTION_TAKE_PHOTO_B = 1;
     private static int PICTURE_CAPTURE_PERMISSION = 222;
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -341,7 +342,7 @@ public class MainActivity extends AppCompatActivity {
                     connection.setRequestProperty("ENCTYPE", "multipart/form-data");
                     connection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
                     connection.setRequestProperty("uploaded_file", selectedFilePath);
-                    
+                    connection.setRequestProperty("Authorization",token);
                     //creating new dataoutputstream
                     dataOutputStream = new DataOutputStream(connection.getOutputStream());
                     String dispName= "image";
