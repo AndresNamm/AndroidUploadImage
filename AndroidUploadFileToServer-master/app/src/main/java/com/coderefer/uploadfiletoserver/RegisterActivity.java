@@ -49,10 +49,9 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class RegisterActivity extends AppCompatActivity  implements AsyncResponse{
+public class RegisterActivity extends BaseActivity implements AsyncResponse{
 
 
-    public static String currentIp = "147.8.203.213";
 
     // Message for MainActivity
     //public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";

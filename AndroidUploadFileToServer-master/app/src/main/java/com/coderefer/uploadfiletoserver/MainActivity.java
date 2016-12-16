@@ -24,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -46,11 +47,11 @@ import java.util.Locale;
 
 import static android.os.Environment.getExternalStoragePublicDirectory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
-    public String currentIp = "147.8.203.213";
 
     //Post URLS
+    public final static String EXTRA_MESSAGE = "com.coderefer.uploadfiletoserver";
 
     //private String SERVER_URL = "http://"+currentIp+"/handle_upload.php";
     //private String SERVER_URL = "http://"+currentIp+":8000/uusapp/fileupload/";
@@ -67,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     // Storage related
-
     private Uri mCurrentImageUri;
     private String mCurrentPhotoPath;
     private String mCurrentPhotoName;
@@ -80,10 +80,10 @@ public class MainActivity extends AppCompatActivity {
 
     ImageView iCaptured;
     Button bUpload;
-
     TextView tUploadStatus;
     TextView tvFileName;
     Button bCaptureImg;
+    Button bGoToGallery;
 
 
     Button.OnClickListener mTakePicOnClickListener =
@@ -101,10 +101,16 @@ public class MainActivity extends AppCompatActivity {
                     uploadImg();
                 }
             };
+    Button.OnClickListener mGoToGalleryListener =
+            new Button.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    goToGallery();
+                }
+            };
 
     protected void onCreate(Bundle savedInstanceState) {
         // Set Up
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_image);
         iCaptured = (ImageView) findViewById(R.id.captured_image);
@@ -112,9 +118,10 @@ public class MainActivity extends AppCompatActivity {
         bCaptureImg = (Button) findViewById(R.id.do_image_capture);
         tvFileName = (TextView) findViewById(R.id.current_img_file_name);
         tUploadStatus = (TextView) findViewById(R.id.upload_status);
+        bGoToGallery =(Button) findViewById(R.id.go_to_gallery);
         bCaptureImg.setOnClickListener(mTakePicOnClickListener);
         bUpload.setOnClickListener(mUploadPicOnClickListener);
-
+        bGoToGallery.setOnClickListener(mGoToGalleryListener);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
             mAlbumStorageDirFactory = new FroyoAlbumDirFactory();
         } else {
@@ -122,7 +129,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Intent intent = getIntent();
-        this.token = intent.getStringExtra(LoginActivity.EXTRA_MESSAGE);
+        String temp = intent.getStringExtra(LoginActivity.EXTRA_MESSAGE);
+        if(temp!=null){
+            this.token = temp;
+        }
         // Start procedures
         askPermissions();
         //checkStorageDir();
@@ -137,11 +147,11 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception ex) {
             tUploadStatus.setText("ikka null");
         }
-
         //tUploadStatus.setText(mediaStorageDir.getPath());
         //tvFileName.setText(mediaStorageDir.getAbsolutePath());
         //Picasso.with(getApplicationContext()).load().into(iCaptured);
     }
+
 
 
     /* Photo album for this application */
@@ -451,4 +461,12 @@ public class MainActivity extends AppCompatActivity {
             //StartVideoCapture();
         }
     }
+
+
+    void goToGallery(){
+        Intent intent = new Intent(this, GalleryActivity.class);
+        intent.putExtra(EXTRA_MESSAGE, this.token);
+        startActivity(intent);
+    }
+
 }

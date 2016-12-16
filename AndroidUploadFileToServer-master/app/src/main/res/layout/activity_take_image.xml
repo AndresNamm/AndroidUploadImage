@@ -22,6 +22,13 @@
         android:layout_height="wrap_content"
         android:enabled="true"
         />
+    <Button
+        android:id="@+id/go_to_gallery"
+        android:text="Checkout Gallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:enabled="true"
+        />
     <TextView
         android:id="@+id/current_img_file_name"
         android:layout_width="match_parent"
