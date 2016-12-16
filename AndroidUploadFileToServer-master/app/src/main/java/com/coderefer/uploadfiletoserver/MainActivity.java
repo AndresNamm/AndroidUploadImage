@@ -48,11 +48,13 @@ import static android.os.Environment.getExternalStoragePublicDirectory;
 
 public class MainActivity extends AppCompatActivity {
 
+    public String currentIp = "147.8.203.213";
 
     //Post URLS
-    //private String SERVER_URL = "http://192.168.8.2/handle_upload.php";
-    //private String SERVER_URL = "http://192.168.8.2:8000/uusapp/fileupload/";
-    private String SERVER_URL = "http://192.168.8.2:8000/uusapp/addimage/";
+
+    //private String SERVER_URL = "http://"+currentIp+"/handle_upload.php";
+    //private String SERVER_URL = "http://"+currentIp+":8000/uusapp/fileupload/";
+    private String SERVER_URL = "http://"+ currentIp +":8000/uusapp/addimage/";
     //private String SERVER_URL = "http://requestb.in/16aqpcu1";
 
 
@@ -119,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
             mAlbumStorageDirFactory = new BaseAlbumDirFactory();
         }
 
+        Intent intent = getIntent();
+        this.token = intent.getStringExtra(LoginActivity.EXTRA_MESSAGE);
         // Start procedures
         askPermissions();
         //checkStorageDir();
@@ -300,7 +304,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             tUploadStatus.setText( result);
-
 
         }
 
